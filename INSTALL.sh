@@ -15,7 +15,7 @@ chmod u+x dropbox-screenshots  # make sure it's executable
 export LAUNCH_AGENT=~/Library/LaunchAgents/com.github.dergachev.dropbox-screenshots.plist
 rm $LAUNCH_AGENT
 while read LINE; do
-  /usr/libexec/PlistBuddy -c "$LINE" $LAUNCH_AGENT 
+  /usr/libexec/PlistBuddy -c "$LINE" $LAUNCH_AGENT
 done <<EOT
 Add :Label string com.github.dergachev.dropbox-screenshots
 Add :WatchPaths array
