@@ -1,17 +1,28 @@
 #!/usr/bin/env ruby
-
+# encoding: utf-8
+MY_DROPBOX_UESR_ID = 22663232
 require 'time'
 
 unless ARGV.first
   $stderr.puts "Usage: dropbox-screenshots <DROPBOX_ID>"
   exit 1
 end
-
-dropbox_user = ARGV.first
+dropbox_user = MY_DROPBOX_UESR_ID || ARGV.first
 screenshots_subfolder = "screenshots"
 screenshots_path = File.expand_path("~/Dropbox/Public/#{screenshots_subfolder}")
 file_path = Dir["#{screenshots_path}/*"].sort_by{ |f| File.mtime(f) }.last
 orig_filename = File.basename(file_path)
+
+
+# Screen Shot 2013-11-01 at 3.10.13 PM.png
+orig_filename.force_encoding("UTF-8")
+time = orig_filename.scan(/screenshot (.*) в (.*).jpg/).first
+
+# in case latest file has already been renamed
+unless time
+  $stderr.puts "Latest file is not an unprocessed screenshot (#{file_path}), exiting."
+  exit 0
+end
 
 # downscale by 50% screenshots if on retina display
 #   see http://blog.lanceli.com/2012/08/downscale-screenshot-at-hight-resolution-on-retina-mackbook-pro.html
@@ -22,20 +33,16 @@ screen_width = `system_profiler SPDisplaysDataType | grep Resolution | awk '{pri
 if screen_width && screen_width.to_i > 2000
   image_width = `sips -g pixelWidth "#{file_path}" | cut -s -d ':' -f 2 | cut -c 2-`
   # only resize huge images
-  if image_width && image_width.to_i > 20000
+  p "Image size was: #{image_width}"
+  if image_width && image_width.to_i > 1000
     $stderr.puts "Resizing #{file_path} to new width #{image_width.to_i/2}"
     `sips --resampleWidth "#{image_width.to_i / 2}" "#{file_path}" --out "#{file_path}"`
   end
+  image_width = `sips -g pixelWidth "#{file_path}" | cut -s -d ':' -f 2 | cut -c 2-`
+  # only resize huge images
+  p "Image size now: #{image_width}"
 end
 
-# Screen Shot 2013-11-01 at 3.10.13 PM.png
-time = orig_filename.scan(/Screen Shot (.*) at (.*).png/).first
-
-# in case latest file has already been renamed
-unless time
-  $stderr.puts "Latest file is not an unprocessed screenshot (#{file_path}), exiting."
-  exit 0
-end
 
 time = time.join(" ").gsub(/\./,':')
 time = Time.parse(time).strftime("%Y.%m.%d-%H-%M-%S")
@@ -44,11 +51,12 @@ time = Time.parse(time).strftime("%Y.%m.%d-%H-%M-%S")
 random_letters = (0...8).map { (65 + rand(26)).chr }.join
 
 # ABSKKJFD-2013.11.01-15.10.13.png
-new_filename = "#{random_letters}-#{time}.png"
+new_filename = "#{random_letters}-#{time}.jpg"
 new_file_path = File.join(screenshots_path, new_filename)
 File.rename(file_path, new_file_path)
 
 
 url = "https://dl.dropbox.com/u/#{dropbox_user}/#{screenshots_subfolder}/#{new_filename}"
+`export PICTURE_URL=#{url}`
 `echo "#{url}" | pbcopy`
-puts `terminal-notifier -title Copied -message "#{url}" -execute "open #{new_file_path}"`
+`terminal-notifier -title Copied -message "#{url}" -execute "open #{new_file_path}"`

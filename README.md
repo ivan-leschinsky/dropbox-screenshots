@@ -14,6 +14,9 @@ Dropbox.app recently added the same feature, but our approach is better:
   to `KDJSAJNN-2013.11.01-15.10.13.png` which is shorter and harder to guess.
 * on retina displays, screenshots are automatically resized to 50%
 
+
+Fixed for OS X 10.10, and sourc filename changed fo russian language
+
 This was only tested on OSX 10.9, though should also work with 10.8.
 
 ## Installation
@@ -21,9 +24,9 @@ This was only tested on OSX 10.9, though should also work with 10.8.
 First, get your Dropbox user ID, as follows:
 
 * In Finder, right-click on any file under `~/Dropbox/Public`
-* choose "Dropbox > Copy Public Link". 
+* choose "Dropbox > Copy Public Link".
 * You'll have a link in your clipboard like `http://dl.dropbox.com/u/12345678/mycoolpic.jpg`
-* 12345678 is the user ID. 
+* 12345678 is the user ID.
 
 <img src="https://dl.dropbox.com/u/29440342/screenshots/YCOJCG-Screen_Shot_2012.12.8-12.40.53.png" width="50%">
 
@@ -44,7 +47,7 @@ bash install.sh 12345678     # replace 12345678 with your dropbox user ID
 ## TODO
 
 * Consider making a custom icon for notifications.
-* Investigate error in /var/log/system.log: `Throttling respawn: Will start in 6 seconds`. 
+* Investigate error in /var/log/system.log: `Throttling respawn: Will start in 6 seconds`.
   [Related thread](http://apple.stackexchange.com/questions/63482/can-launchd-run-programs-more-frequently-than-every-10-seconds)
 * Consider making a gem for ease of install.
 
