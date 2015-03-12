@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 MY_DROPBOX_UESR_ID = 22663232
-DOWNSCALE_IMAGES = false
+DOWNSCALE_IMAGES = true
+DOWNSCALE_ALL_IMAGES = false
 
 require 'time'
 
@@ -38,7 +39,7 @@ if DOWNSCALE_IMAGES
     image_width = `sips -g pixelWidth "#{file_path}" | cut -s -d ':' -f 2 | cut -c 2-`
     # only resize images with width > 1000px
     p "Image size was: #{image_width}"
-    if image_width && image_width.to_i > 1000
+    if image_width && (DOWNSCALE_ALL_IMAGES || image_width.to_i > 1000)
       $stderr.puts "Resizing #{file_path} to new width #{image_width.to_i/2}"
       `sips --resampleWidth "#{image_width.to_i / 2}" "#{file_path}" --out "#{file_path}"`
     end
