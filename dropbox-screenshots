@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 MY_DROPBOX_UESR_ID = 22663232
-DOWNSCALE_IMAGES = true
+SCREENSHOT_PREFIX = 'vano-mbp'
+DOWNSCALE_IMAGES = false
 DOWNSCALE_ALL_IMAGES = false
 
 require 'time'
@@ -53,11 +54,13 @@ end
 time = time.join(" ").gsub(/\./,':')
 time = Time.parse(time).strftime('%Y.%m.%d-%H-%M-%S')
 
-# 8 random uppercase letters; for security
-random_letters = (0...8).map { (65 + rand(26)).chr }.join
-
-# ABSKKJFD-2013.11.01-15.10.13.png
-new_filename = "#{random_letters}-#{time}.jpg"
+new_filename = if SCREENSHOT_PREFIX
+                 "#{SCREENSHOT_PREFIX}-#{time}.jpg"
+               else
+                 # 8 random uppercase letters; for security
+                 random_letters = (0...8).map { (65 + rand(26)).chr }.join
+                 "#{random_letters}-#{time}.jpg"
+               end
 new_file_path = File.join(screenshots_path, new_filename)
 File.rename(file_path, new_file_path)
 
