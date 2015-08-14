@@ -1,9 +1,10 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env /Users/vanopiano/.rvm/bin/open_cv_ruby
 # encoding: utf-8
 MY_DROPBOX_UESR_ID = 22663232
 SCREENSHOT_PREFIX = 'vano-mbp'
 DOWNSCALE_IMAGES = false
 DOWNSCALE_ALL_IMAGES = false
+REVEAL_INSTEAD_OF_OPEN = true
 
 require 'time'
 
@@ -64,8 +65,12 @@ new_filename = if SCREENSHOT_PREFIX
 new_file_path = File.join(screenshots_path, new_filename)
 File.rename(file_path, new_file_path)
 
-
-url = "https://dl.dropbox.com/u/#{dropbox_user}/#{screenshots_subfolder}/#{new_filename}"
+url = "https://dl.dropboxusercontent.com/u/#{dropbox_user}/#{screenshots_subfolder}/#{new_filename}"
 `export PICTURE_URL=#{url}`
 `echo "#{url}" | pbcopy`
-puts `terminal-notifier -title Copied -message "#{url}" -execute "open #{new_file_path}"`
+
+if REVEAL_INSTEAD_OF_OPEN
+  `terminal-notifier -title Copied -message "#{url}" -execute "~/revealInFinder.bash #{new_file_path}"`
+else
+  `terminal-notifier -title Copied -message "#{url}" -execute "open #{new_file_path}"`
+end
