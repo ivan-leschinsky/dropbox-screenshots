@@ -31,9 +31,14 @@ EOT
 launchctl unload $LAUNCH_AGENT
 launchctl load $LAUNCH_AGENT
 
+defaults write com.apple.screencapture type jpg
+defaults write com.apple.screencapture name "screenshot"
 # ensure OSX stores all screenshots in ~/Dropbox/Public/screenshots
 defaults write com.apple.screencapture location $SCREENSHOT_PATH
 killall SystemUIServer
+
+cp revealInFinder.sh ~/revealInFinder.sh
+chmod +x ~/revealInFinder.sh
 
 # Misc commands:
 #  launchctl list

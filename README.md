@@ -15,9 +15,7 @@ Dropbox.app recently added the same feature, but our approach is better:
 * on retina displays, screenshots are automatically resized to 50%
 
 
-Fixed for OS X 10.10, and sourc filename changed fo russian language
-
-This was only tested on OSX 10.9, though should also work with 10.8.
+Fixed for OS X 10.11, and sourc filename changed fo russian language
 
 ## Installation
 
