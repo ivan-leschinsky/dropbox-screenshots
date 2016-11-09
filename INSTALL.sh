@@ -40,6 +40,8 @@ killall SystemUIServer
 cp revealInFinder.sh ~/revealInFinder.sh
 chmod +x ~/revealInFinder.sh
 
+gem install terminal-notifier && rvm wrapper current terminal-notifier
+
 # Misc commands:
 #  launchctl list
 #  launchctl getenv PATH
